@@ -462,7 +462,7 @@ export default function SubscriptionManager() {
                   <p className="text-gray-400 mb-1">Server Wallet:</p>
                   <p className="font-mono text-gray-300 break-all">{wallet.address}</p>
                   <p className="text-yellow-400 mt-2 text-[10px] leading-tight">
-                    ⚠️ Add Base Sepolia ETH to this wallet for gas fees to execute subscription charges
+                     Paymaster available - no ETH required to charge/revoke
                   </p>
                 </div>
               )}
