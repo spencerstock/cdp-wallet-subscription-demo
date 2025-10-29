@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { base } from '@base-org/account';
+import { base } from '@base-org/account/node';
 
 // IMPORTANT: This wallet name must match the one used in create-wallet/route.ts
 const WALLET_NAME = 'bbq-sub-v1';
@@ -16,7 +16,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Use the CDP server wallet to revoke the subscription
-    // @ts-ignore - Type definitions may not be complete for the local SDK version
     const revokeResult = await base.subscription.revoke({
       id: subscriptionId,
       testnet: true,

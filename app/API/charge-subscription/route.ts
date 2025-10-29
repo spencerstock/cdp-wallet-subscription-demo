@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { base } from '@base-org/account';
+import { base } from '@base-org/account/node';
 
 // IMPORTANT: This wallet name must match the one used in create-wallet/route.ts
 const WALLET_NAME = 'bbq-sub-v1';
@@ -48,9 +48,10 @@ export async function POST(request: NextRequest) {
       success: true,
       transactionHash: chargeResult.id,
       amount: chargeResult.amount,
-      chargedBy: chargeResult.chargedBy,
+      subscriptionOwner: chargeResult.subscriptionOwner,
       message: `Successfully charged $${chargeResult.amount} USDC`,
-      subscriptionId: chargeResult.subscriptionId
+      subscriptionId: chargeResult.subscriptionId,
+      ...(chargeResult.recipient && { recipient: chargeResult.recipient })
     });
 
   } catch (error: any) {

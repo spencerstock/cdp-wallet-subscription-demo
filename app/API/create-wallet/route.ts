@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { base } from '@base-org/account';
+import { base } from '@base-org/account/node';
 
 // IMPORTANT: This wallet name must match the one used in charge-subscription/route.ts
 const WALLET_NAME = 'bbq-sub-v1';
@@ -7,7 +7,6 @@ const WALLET_NAME = 'bbq-sub-v1';
 export async function POST() {
   try {
     // Get or create a CDP smart wallet to act as the subscription owner
-    // @ts-ignore - Type definitions may not be complete for the local SDK version
     const owner = await base.subscription.getOrCreateSubscriptionOwnerWallet({
       cdpApiKeyId: process.env.CDP_API_KEY_ID,
       cdpApiKeySecret: process.env.CDP_API_KEY_SECRET,

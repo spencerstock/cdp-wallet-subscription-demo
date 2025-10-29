@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@base-org/account": "file:../account-sdk/packages/account-sdk",
+    "@base-org/account": "^2.4.1",
     "@coinbase/cdp-sdk": "^1.38.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "ethers": "^6.15.0",
