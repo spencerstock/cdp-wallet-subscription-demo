@@ -688,15 +688,20 @@ export default function SubscriptionManager() {
                 {/* Status Badge */}
                 <div className="flex items-center justify-between p-4 bg-white/10 rounded-xl">
                   <div className="flex items-center space-x-3">
-                    {subscriptionStatus?.isSubscribed ? (
+                    {subscriptionStatus === null || loading.status ? (
+                      <>
+                        <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                        <span className="font-semibold text-yellow-400">Status Check In Progress</span>
+                      </>
+                    ) : subscriptionStatus.isSubscribed ? (
                       <>
                         <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                         <span className="font-semibold text-green-400">Active Subscription</span>
                       </>
                     ) : (
                       <>
-                        <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
-                        <span className="font-semibold text-yellow-400">Status Check In Progress</span>
+                        <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                        <span className="font-semibold text-red-400">Subscription Revoked</span>
                       </>
                     )}
                   </div>
