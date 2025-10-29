@@ -43,6 +43,7 @@ export default function SubscriptionManager() {
   const [isEditingAmount, setIsEditingAmount] = useState(false);
   const [chargeAmount, setChargeAmount] = useState<string>('1.00');
   const [recipientAddress, setRecipientAddress] = useState<string>('');
+  const [requireBalance, setRequireBalance] = useState<boolean>(true);
 
   // Load wallet from localStorage on component mount
   useEffect(() => {
@@ -140,7 +141,8 @@ export default function SubscriptionManager() {
         recurringCharge: subscriptionAmount,  // User-selected monthly charge in USDC
         subscriptionOwner: wallet.address,   // Our backend wallet address
         periodInDays: 30,                   // 30-day billing period
-        testnet: true                        // Use testnet (Base Sepolia)
+        testnet: true,                       // Use testnet (Base Sepolia)
+        requireBalance: requireBalance       // Whether to require balance check
       });
 
       console.log('Subscription created:', subscription);
@@ -615,6 +617,35 @@ export default function SubscriptionManager() {
                 </li>
               </ul>
 
+              {/* RequireBalance Toggle */}
+              <div className="mb-6 p-4 bg-white/10 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <label htmlFor="requireBalance" className="text-white font-medium block mb-1">
+                      Require Balance
+                    </label>
+                    <p className="text-xs text-white/70">
+                      Check if wallet has sufficient balance before subscribing
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setRequireBalance(!requireBalance)}
+                    disabled={!!subscription}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent ${
+                      requireBalance ? 'bg-green-500' : 'bg-gray-600'
+                    } ${subscription ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    aria-label="Toggle require balance"
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        requireBalance ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
               <button
                 onClick={handleCreateSubscription}
                 disabled={loading.subscription || !!subscription}
@@ -650,6 +681,23 @@ export default function SubscriptionManager() {
                   </>
                 )}
               </button>
+
+              {subscription && (
+                <button
+                  onClick={() => {
+                    setSubscription(null);
+                    setSubscriptionStatus(null);
+                    localStorage.removeItem('bbq-subscription');
+                    setSuccess('Subscription reset. You can now create a new subscription.');
+                  }}
+                  className="w-full mt-2 py-2 px-4 rounded-lg text-sm font-medium bg-white/10 text-white hover:bg-white/20 transition-all flex items-center justify-center space-x-2"
+                >
+                  <svg className="w-4 h-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                  </svg>
+                  <span>Reset</span>
+                </button>
+              )}
 
               {!wallet && !subscription && (
                 <p className="text-xs text-white/60 text-center mt-3">
